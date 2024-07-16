@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Recorder</title>
     <style>
+        button:hover{
+            cursor: pointer;
+        }
         button:disabled:hover {
             background-color: #ccc;
         }
@@ -18,7 +21,7 @@
             background-color: #f0f0f0;
         }
         #videoContainer {
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             width: 100%;
@@ -171,10 +174,30 @@ background-color: transparent !important;
 
 border: 1px solid grey;
 }
+
+#successMessage {
+            display: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
     <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
 </head>
 <body>
+    <div id="recordButtonContainer">
+
+        <button id="recordButton">Record Video</button>
+    </div>
+
+    
+    <div id="successMessage">
+        
+       <img style="margin: 20px;" height="50px" width="50px" src="https://icons.veryicon.com/png/o/miscellaneous/8atour/submit-successfully.png"></div>Video recorded and submitted successfully</div>
+    </div>
+
     <div id="videoContainer">
         <video id="video" autoplay muted playsinline>
              <source id="videoSource" type="video/webm">
@@ -188,10 +211,13 @@ border: 1px solid grey;
         <div id="countdown"></div>
         <iframe id="base64Viewer" frameborder="0"></iframe>
         <div id="recIndicator" class="rec-indicator">REC</div>
+        
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const recordButton = document.getElementById('recordButton');
+            const successMessage = document.getElementById('successMessage');
             const video = document.getElementById('video');
             const flipButton = document.getElementById('flipButton');
             const startButton = document.getElementById('startButton');
@@ -309,6 +335,12 @@ border: 1px solid grey;
                 recIndicator.style.display = 'none';
             }
 
+            recordButton.addEventListener('click', () => {
+                recordButton.style.display = 'none';
+                videoContainer.style.display = 'flex';
+                setupCamera();
+            });
+
             flipButton.addEventListener('click', async () => {
                 isFrontCamera = !isFrontCamera;
                 await setupCamera();
@@ -336,7 +368,11 @@ border: 1px solid grey;
                 })
                 .then(response => {
                     console.log('Upload successful:', response);
-                    alert('Video uploaded successfully!');
+                    mediaRecorder.stop();
+                    successMessage.style.display = 'block'; // Show success message
+                    // Hide controls and video container
+                    videoContainer.style.display = 'none';
+                    successMessage.scrollIntoView({ behavior: 'smooth' }); // Scroll to success message
                 })
                 .catch(error => {
                     console.error('Upload failed:', error);
@@ -358,9 +394,11 @@ border: 1px solid grey;
                 stopButton.disabled = true;
                 countdown.style.display = 'none';
                 downloadLink.style.display = 'none';
+                successMessage.style.display = 'none';
+                recordButton.style.display = 'block';
             };
 
-            setupCamera();
+           
         });
 
       stopButton.addEventListener("click", function (params) {
