@@ -194,6 +194,8 @@ border: 1px solid grey;
     <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
 </head>
 <body>
+    <input style="min-width: 250px; min-height: 400px; display: none !important; " id="userId">
+    
     <div id="recordButtonContainer">
 
         <button id="recordButton">Record Video</button>
@@ -218,7 +220,7 @@ border: 1px solid grey;
         <div id="countdown"></div>
         <iframe id="base64Viewer" frameborder="0"></iframe>
         <div id="recIndicator" class="rec-indicator">REC</div>
-        <input style="min-width: 250px; min-height: 400px; display: none !important; " id="userId">
+       
     </div>
 
     <script>
@@ -380,6 +382,7 @@ border: 1px solid grey;
                 })
                 .then(response => {
                     console.log('Upload successful:', response);
+                    document.getElementById("userId").value = userId
                     mediaRecorder.stop();
                     JFCustomWidget.requestFrameResize({height: 200})
 
@@ -453,7 +456,7 @@ function getData() {
 
     return {
         valid: true,
-        value: userId
+        value: widget.value
 
     };
 }
