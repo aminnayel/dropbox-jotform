@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Recorder</title>
+    <style>
+        button:disabled:hover {
+            background-color: #ccc;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #videoContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 620px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* Ensure container for video has relative positioning */
+        }
+        video {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            position: relative; /* Ensure video element has relative positioning */
+        }
+        .preview-watermark {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+        .rec-indicator {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background-color: rgba(255, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            display: none;
+            animation: fade 1s infinite alternate; /* Animation for fade effect */
+        }
+        @keyframes fade {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: orange;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        button:hover {
+            background-color: #c38005;
+        }
+        #countdown {
+            font-size: 1.5em;
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        #base64Viewer {
+            display: none;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+        #countdown {
+        font-size: 3.5em !important;
+        color: red;
+        margin-top: -50px; /* Adjust margin to move the countdown up */
+        text-align: center;
+        position: absolute; /* Position absolutely */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Center it precisely */
+        display: none;
+        z-index: 1; /* Ensure it's above other elements */
+    }
+
+
+    @media (max-width: 600px) {
+        #controls {
+            flex-direction: column; /* Stack buttons vertically on mobile */
+            gap: 8px;
+         
+          
+        }
+
+        button {
+            padding: 12px 20px; /* Adjust button padding for better mobile appearance */
+            font-size: 14px;
+        }
+
+ 
+        #controls {
+  min-width: 100% !important;
+}
+   
+    }
+
+    #startButton:hover {
+  background-color: darkred !important;
+}
+
+
+    #startButton:disabled {
+  background-color: #ccc !important;
+}
+
+
+#startButton {
+  background-color: red !important;
+}
+#saveButton:disabled {
+  background-color: #ccc !important;
+}
+
+#saveButton {
+  background-color: green !important;
+}
+body {
+
+background-color: transparent !important;
+}
+#videoContainer {
+
+border: 1px solid grey;
+}
+    </style>
+    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+</head>
+<body>
+    <div id="videoContainer">
+        <video id="video" autoplay muted playsinline>
+             <source id="videoSource" type="video/webm">
+        </video>
+        <div id="controls">
+            <button id="flipButton">Flip Camera</button>
+            <button id="startButton">Start Recording</button>
+            <button id="stopButton" disabled>Stop Recording</button>
+            <button id="saveButton" disabled>Submit Video</button>
+        </div>
+        <div id="countdown"></div>
+        <iframe id="base64Viewer" frameborder="0"></iframe>
+        <div id="recIndicator" class="rec-indicator">REC</div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const video = document.getElementById('video');
+            const flipButton = document.getElementById('flipButton');
+            const startButton = document.getElementById('startButton');
+            const stopButton = document.getElementById('stopButton');
+            const saveButton = document.getElementById('saveButton');
+            const countdown = document.getElementById('countdown');
+            const base64Viewer = document.getElementById('base64Viewer');
+            const videoContainer = document.getElementById('videoContainer');
+            const recIndicator = document.getElementById('recIndicator');
+
+            let mediaRecorder;
+            let recordedChunks = [];
+            let currentStream;
+            let isFrontCamera = false;
+            const dropboxAccessToken = 'sl.B5HSoGJPiAIPQ3LuMjHLNx3nFqP5WaX6rq7Z26ywjWGL0X_H5vXBIEZKb_xTrmpCRNfNJAWXGXA2oL1tP3Z2dD0scIHxoU3Gzxu4Am_N0OuEecUgX5ImHzPmtaqITepZC8ygCtPYKC6OfPQ'; // Replace with your actual access token
+            let previewWatermark; // Variable to hold the preview watermark element
+
+            async function setupCamera() {
+                try {
+                    if (currentStream) {
+                        currentStream.getTracks().forEach(track => track.stop());
+                    }
+                    const constraints = {
+                        video: { facingMode: isFrontCamera ? 'user' : 'environment' },
+                        audio: true
+                    };
+
+                    currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                    video.srcObject = currentStream;
+
+                    mediaRecorder = new MediaRecorder(currentStream);
+                    mediaRecorder.ondataavailable = event => {
+                        if (event.data.size > 0) {
+                            recordedChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstart = () => {
+                        // Remove previous preview watermark if exists
+                        if (previewWatermark && previewWatermark.parentNode === videoContainer) {
+                            videoContainer.removeChild(previewWatermark);
+                        }
+
+                        // Set REC indicator to be visible
+                        recIndicator.style.display = 'block';
+
+                        // Set video source back to live camera feed
+                        video.srcObject = currentStream;
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                        const videoURL = URL.createObjectURL(blob);
+
+                        // Remove previous preview watermark if exists
+                        if (previewWatermark && previewWatermark.parentNode === videoContainer) {
+                            videoContainer.removeChild(previewWatermark);
+                        }
+
+                        // Add new preview watermark
+                        previewWatermark = document.createElement('div');
+                        previewWatermark.className = 'preview-watermark';
+                        previewWatermark.textContent = 'Preview';
+                        videoContainer.appendChild(previewWatermark);
+
+                        video.srcObject = null; // Stop live camera feed
+                        video.src = videoURL; // Replace with recorded video
+                        video.controls = true; // Show video controls
+                        saveButton.disabled = false;
+                        startButton.disabled = false;
+                        stopButton.disabled = true;
+
+                        recIndicator.style.display = 'none'; // Hide REC indicator after recording stops
+                    };
+                } catch (err) {
+                    console.error('Error accessing media devices.', err);
+                    alert('Error accessing media devices: ' + err.message);
+                    if (err.name === 'NotAllowedError') {
+                        alert('Permission denied. Please grant access to camera and microphone.');
+                    }
+                }
+            }
+
+            function startCountdown() {
+                countdown.style.display = 'block';
+                let timeLeft = 3;
+                countdown.textContent = timeLeft;
+
+                const countdownInterval = setInterval(() => {
+                    timeLeft -= 1;
+                    countdown.textContent = timeLeft;
+
+                    if (timeLeft === 0) {
+                        clearInterval(countdownInterval);
+                        countdown.style.display = 'none';
+                        startRecording();
+                    }
+                }, 1000);
+            }
+
+            function startRecording() {
+                recordedChunks = [];
+                mediaRecorder.start();
+                startButton.disabled = true;
+                flipButton.disabled = true;
+                stopButton.disabled = false;
+                saveButton.disabled = true;
+
+                // Remove previous preview watermark if exists
+                if (previewWatermark && previewWatermark.parentNode === videoContainer) {
+                    videoContainer.removeChild(previewWatermark);
+                }
+
+                // Hide REC indicator before starting recording
+                recIndicator.style.display = 'none';
+            }
+
+            flipButton.addEventListener('click', async () => {
+                isFrontCamera = !isFrontCamera;
+                await setupCamera();
+            });
+
+            startButton.addEventListener('click', () => {
+                startCountdown();
+            });
+
+            stopButton.addEventListener('click', () => {
+                mediaRecorder.stop();
+            });
+
+            saveButton.addEventListener('click', () => {
+                const file = new Blob(recordedChunks, { type: 'video/webm' });
+
+                const dropbox = new Dropbox.Dropbox({ accessToken: dropboxAccessToken });
+
+                dropbox.filesUpload({
+                    path: `/video_${Date.now()}.webm`,
+                    contents: file,
+                    mode: 'add',
+                    autorename: true,
+                    mute: false
+                })
+                .then(response => {
+                    console.log('Upload successful:', response);
+                    alert('Video uploaded successfully!');
+                })
+                .catch(error => {
+                    console.error('Upload failed:', error);
+                    alert('Upload failed: ' + error.message);
+                });
+            });
+
+            // Clear previous video state on page load
+            window.onload = function() {
+                video.srcObject = null;
+                video.src = '';
+                recordedChunks = [];
+                if (previewWatermark && previewWatermark.parentNode === videoContainer) {
+                    videoContainer.removeChild(previewWatermark);
+                }
+                recIndicator.style.display = 'none';
+                saveButton.disabled = true;
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                countdown.style.display = 'none';
+                downloadLink.style.display = 'none';
+            };
+
+            setupCamera();
+        });
+
+      stopButton.addEventListener("click", function (params) {
+        document.getElementById("startButton").innerText = "New Recording"
+      })
+    </script>
+</body>
+</html>
