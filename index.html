@@ -355,7 +355,8 @@ border: 1px solid grey;
             });
 
             saveButton.addEventListener('click', () => {
-                
+                document.getElementById("saveButton").innerText = "Wait... ⏳"
+                startButton.disabled = true
                 const file = new Blob(recordedChunks, { type: 'video/webm' });
 
                 const dropbox = new Dropbox.Dropbox({ accessToken: dropboxAccessToken });
