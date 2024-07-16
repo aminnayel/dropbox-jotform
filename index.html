@@ -194,8 +194,8 @@ border: 1px solid grey;
     <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
 </head>
 <body>
-    <input style="min-width: 250px; min-height: 400px; display: none !important; " id="userId">
-    
+    <input style="min-width: 250px; display: none !important; " id="userId">
+
     <div id="recordButtonContainer">
 
         <button id="recordButton">Record Video</button>
@@ -462,7 +462,7 @@ function getData() {
 }
 
 
-$('#userId').on('change', function() {
+// $('#userId').on('change', function() {
 
 // generateButton.addEventListener('click', function () {
     
@@ -473,7 +473,7 @@ setInterval(() => {
 }, 500);
 
 }
-)}
+// )}
 
 JFCustomWidget.subscribe("ready", function(data) {
 var widget = new myWidget();
