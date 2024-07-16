@@ -195,7 +195,7 @@ border: 1px solid grey;
     
     <div id="successMessage">
         
-       <img style="margin: 20px;" height="50px" width="50px" src="https://icons.veryicon.com/png/o/miscellaneous/8atour/submit-successfully.png"><div>Video recorded and submitted successfully</div>
+       <img style="margin: 20px;" height="50px" width="50px" src="https://icons.veryicon.com/png/o/miscellaneous/8atour/submit-successfully.png"><div>Recorded video submitted successfully</div>
     </div>
 
     <div id="videoContainer">
@@ -203,7 +203,7 @@ border: 1px solid grey;
              <source id="videoSource" type="video/webm">
         </video>
         <div id="controls">
-            <button id="flipButton">Flip Camera</button>
+            <button id="flipButton">Change Camera</button>
             <button id="startButton">Start Recording</button>
             <button id="stopButton" disabled>Stop Recording</button>
             <button id="saveButton" disabled>Submit Video</button>
@@ -355,6 +355,7 @@ border: 1px solid grey;
             });
 
             saveButton.addEventListener('click', () => {
+                
                 const file = new Blob(recordedChunks, { type: 'video/webm' });
 
                 const dropbox = new Dropbox.Dropbox({ accessToken: dropboxAccessToken });
