@@ -4,7 +4,7 @@
     let widgetData = JFCustomWidget.getWidgetSettings()
     let countdownSound = widgetData.countdownSound
     let maxLength = widgetData.maxlength
-    console.log(countdownSound, maxLength);
+    console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
 // }
 
 
