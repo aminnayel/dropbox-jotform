@@ -21,6 +21,7 @@ function getJotformWidgetData() {
     }
 
 }
+getJotformWidgetData()
 
 
 document.addEventListener("DOMContentLoaded", function() {
