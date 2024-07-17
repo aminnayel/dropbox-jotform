@@ -4,9 +4,9 @@
 
 function getJotformWidgetDataa() {
 
-    let widgetData = JFCustomWidget.getWidgetSettings()
-    let countdownSound = widgetData.countdownSound
-    let maxLength = widgetData.maxlength
+    var widgetData = JFCustomWidget.getWidgetSettings()
+    var countdownSound = widgetData.countdownSound
+    var maxLength = widgetData.maxlength
    
 
     if (!widgetData.countdownSound) {
