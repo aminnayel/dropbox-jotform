@@ -1,3 +1,13 @@
+// getting Jotform widget data
+
+// function getJotformWidgetData() {
+    let widgetData = JFCustomWidget.getWidgetSettings()
+    let countdownSound = widgetData.countdownSound
+    let maxLength = widgetData.maxlength
+    console.log(countdownSound, maxLength);
+// }
+
+
 document.addEventListener("DOMContentLoaded", function() {
             const recordButton = document.getElementById('recordButton');
             const successMessage = document.getElementById('successMessage');
