@@ -9,7 +9,7 @@ function getJotformWidgetData() {
     let maxLength = widgetData.maxlength
    
 
-    if (!x.countdownSound.length) {
+    if (!widgetData.countdownSound) {
    
         setTimeout(() => {
             getJotformWidgetData()
