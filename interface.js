@@ -1,11 +1,26 @@
 // getting Jotform widget data
 
-// function getJotformWidgetData() {
+
+
+function getJotformWidgetData() {
+
     let widgetData = JFCustomWidget.getWidgetSettings()
     let countdownSound = widgetData.countdownSound
     let maxLength = widgetData.maxlength
-    console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
-// }
+   
+
+    if (!x.countdownSound.length) {
+   
+        setTimeout(() => {
+            getJotformWidgetData()
+            console.log("nooo ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
+            
+        }, 100);
+    } else {
+        console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
+    }
+
+}
 
 
 document.addEventListener("DOMContentLoaded", function() {
