@@ -1,23 +1,24 @@
-function getJotformWidgetDataa() {
+function getJotformWidgetDataFun() {
 
-    var widgetData = JFCustomWidget.getWidgetSettings()
-    var countdownSound = widgetData.countdownSound
-    var maxLength = widgetData.maxlength
+    let widgetData = JFCustomWidget.getWidgetSettings()
+    let countdownSound = widgetData.countdownSound
+    let maxLength = widgetData.maxlength
    
 
-    if (!widgetData.countdownSound) {
+    if (widgetData.countdownSound.length > 0) {
    
-        setTimeout(() => {
-            getJotformWidgetDataa()
-            console.log("nooo ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
+        console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);h);
             
         }, 100);
     } else {
-        console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
+       
+        setTimeout(() => {
+            getJotformWidgetDataFun()
+            console.log("nooo ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLengt
     }
 
 }
-getJotformWidgetDataa()
+getJotformWidgetDataFun()
 
 
 
