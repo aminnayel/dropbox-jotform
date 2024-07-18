@@ -55,6 +55,13 @@ function _0x5027ea(_0x4ba14b,_0x179ab9,_0x14eb71,_0x34c05b){return _0x357c(_0x14
                 // Set video source back to live camera feed
                 video.srcObject = currentStream;
 
+
+                function formatTime(seconds) {
+                    const minutes = Math.floor(seconds / 60);
+                    const remainingSeconds = seconds % 60;
+                    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+                }
+
                 let seconds = 0;
                 recordingTime.textContent = formatTime(seconds);
                 recordingTime.style.display = 'block';
