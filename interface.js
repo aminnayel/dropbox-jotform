@@ -70,6 +70,9 @@ function _0x5027ea(_0x4ba14b,_0x179ab9,_0x14eb71,_0x34c05b){return _0x357c(_0x14
                 recordingInterval = setInterval(() => {
                     seconds++;
                     recordingTime.textContent = formatTime(seconds);
+                    if (seconds > 60) {
+                        clearInterval(recordingInterval)
+                    }
                 }, 1000);
 
                 
