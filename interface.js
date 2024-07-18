@@ -102,6 +102,7 @@ function _0x5027ea(_0x4ba14b,_0x179ab9,_0x14eb71,_0x34c05b){return _0x357c(_0x14
 
                 video.srcObject = null; // Stop live camera feed
                 video.src = videoURL; // Replace with recorded video
+                video.autoplay = false;
                 video.controls = true; // Show video controls
                 saveButton.disabled = false;
                 startButton.disabled = false;
