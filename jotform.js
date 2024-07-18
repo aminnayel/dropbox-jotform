@@ -3,19 +3,19 @@ function getJotformWidgetDataFun() {
     let widgetData = JFCustomWidget.getWidgetSettings()
     let countdownSound = widgetData.countdownSound
     let maxLength = widgetData.maxlength
-   
 
     if (widgetData.countdownSound.length > 0) {
    
-        console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);h);
-            
-        }, 100);
+        console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
+      
     } else {
        
-        setTimeout(() => {
-            getJotformWidgetDataFun()
-            console.log("nooo ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLengt
-    }
+      setTimeout(() => {
+        getJotformWidgetDataFun()
+        console.log("nooo ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength)
+      }, 100);
+    }      
+ 
 
 }
 getJotformWidgetDataFun()
