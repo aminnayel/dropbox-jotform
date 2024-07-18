@@ -137,6 +137,10 @@ button {
 min-width: 100% !important;
 }
 
+.preview-watermark, .rec-indicator {
+    font-size: 14px !important;
+}
+
 }
 
 #startButton:hover {
