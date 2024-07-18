@@ -55,7 +55,7 @@ video {
     font-weight: bold;
     color: #fff;
     display: none;
-    animation: fade 1s infinite alternate; /* Animation for fade effect */
+    animation: fade 0.5s infinite alternate; /* Animation for fade effect */
 }
 @keyframes fade {
     from {
