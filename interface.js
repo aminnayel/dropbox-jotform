@@ -196,8 +196,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     let widgetData = JFCustomWidget.getWidgetSettings()
                     let countdownSound = widgetData.countdownSound
-                    let maxLength = widgetData.maxlength
-                    console.log("See: ",widgetData, countdownSound, maxlength);
+                    // let maxLength = widgetData.maxlength
+                    console.log("See: ",widgetData, countdownSound);
                 
                 }
                 getJotformWidgetDataFun()
