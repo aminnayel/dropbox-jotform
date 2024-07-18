@@ -1,4 +1,4 @@
-function getJotformWidgetDataa() {
+function getJotformWidgetDataFun() {
 
     var widgetData = JFCustomWidget.getWidgetSettings()
     var countdownSound = widgetData.countdownSound
@@ -17,7 +17,7 @@ function getJotformWidgetDataa() {
     }
 
 }
-getJotformWidgetDataa()
+getJotformWidgetDataFun()
 
 
 
