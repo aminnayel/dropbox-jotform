@@ -185,3 +185,11 @@ border: 1px solid grey;
 #recordingTime{
     display: none;
 }
+
+#maxLengthMessage {
+    display: none;
+    margin-top: 14px;
+    margin-bottom: -7px;
+    font-size: 14px;
+    color: red;
+}
