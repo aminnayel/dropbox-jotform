@@ -11,7 +11,7 @@ function getJotformWidgetDataFun() {
             getJotformWidgetDataa()
             console.log("nooo ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
             
-        }, 100);
+        }, 100); 
     } else {
         console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
     }
