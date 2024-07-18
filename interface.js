@@ -188,7 +188,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 startButton.disabled = false;
                 stopButton.disabled = true;
                 countdown.style.display = 'none';
-                downloadLink.style.display = 'none';
                 successMessage.style.display = 'none';
                 recordButton.style.display = 'block';
 
