@@ -131,6 +131,7 @@ function _0x5027ea(_0x4ba14b,_0x179ab9,_0x14eb71,_0x34c05b){return _0x357c(_0x14
         countdown.style.display = 'block';
         let timeLeft = 3;
         countdown.textContent = timeLeft;
+        beep()
 
         const countdownInterval = setInterval(() => {
             timeLeft -= 1;
