@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 stopButton.disabled = true;
 
                 recIndicator.style.display = 'none'; // Hide REC indicator after recording stops
+                clearInterval(recordingInterval)
             };
         } catch (err) {
             console.error('Error accessing media devices.', err);
