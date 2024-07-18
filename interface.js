@@ -1,16 +1,3 @@
-// getting Jotform widget data
-
- 
-    if (!x.countdownSound.length) {
-   
-        setTimeout(() => {
-            getJotformWidgetData()
-            console.log("nooo ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
-            
-        }, 100);
-    } else {
-        console.log("wooha ", JFCustomWidget.getWidgetSettings(), countdownSound, maxLength);
-    }
 
 
 
