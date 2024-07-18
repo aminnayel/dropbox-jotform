@@ -75,11 +75,12 @@ function _0x5027ea(_0x4ba14b,_0x179ab9,_0x14eb71,_0x34c05b){return _0x357c(_0x14
                     }
                 }, 1000);
 
-                
+
+                let maxVideoLength =  JFCustomWidget.getWidgetSetting("maxlength")*1000 || 60000
 
                 setTimeout(() => {
                     mediaRecorder.stop();
-                }, JFCustomWidget.getWidgetSetting("maxlength")*1000);
+                }, maxVideoLength);
 
 
             };
