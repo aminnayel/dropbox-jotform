@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Set video source back to live camera feed
                 video.srcObject = currentStream;
-
+                video.autoplay = true
+                video.controls = false
 
                 function formatTime(seconds) {
                     const minutes = Math.floor(seconds / 60);
@@ -66,20 +67,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 recordingTime.textContent = formatTime(seconds);
                 recordingTime.style.display = 'block';
 
+                let maxVideoLength =  JFCustomWidget.getWidgetSetting("maxlength")*1000 || 60000
+
                 // Update recording time every second
                 recordingInterval = setInterval(() => {
                     seconds++;
                     recordingTime.textContent = formatTime(seconds);
-                    if (seconds > 60) {
+                    if (seconds > maxVideoLength) {
                         clearInterval(recordingInterval)
                     }
                 }, 1000);
 
 
-                let maxVideoLength =  JFCustomWidget.getWidgetSetting("maxlength")*1000 || 60000
-
+               
                 setTimeout(() => {
                     mediaRecorder.stop();
+                    clearInterval(recordingInterval)
                 }, maxVideoLength);
 
 
@@ -103,6 +106,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 video.srcObject = null; // Stop live camera feed
                 video.src = videoURL; // Replace with recorded video
                 video.autoplay = false;
+                video.controls = true
+                
                 video.controls = true; // Show video controls
                 saveButton.disabled = false;
                 startButton.disabled = false;
@@ -121,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function startCountdown() {
       
-      let hasSoundEnabled = JFCustomWidget.getWidgetSetting("countdownSound")
+      let hasSoundEnabled = JFCustomWidget.getWidgetSetting("countdownSound") || "Yes"
        
       if (hasSoundEnabled == "Yes") {
       function beepCountdown() {
@@ -172,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function() {
         flipButton.disabled = true;
         stopButton.disabled = false;
         saveButton.disabled = true;
+        
 
         // Remove previous preview watermark if exists
         if (previewWatermark && previewWatermark.parentNode === videoContainer) {
