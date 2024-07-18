@@ -1,6 +1,7 @@
 
 
 
+
 document.addEventListener("DOMContentLoaded", function() {
             const recordButton = document.getElementById('recordButton');
             const successMessage = document.getElementById('successMessage');
@@ -190,6 +191,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 downloadLink.style.display = 'none';
                 successMessage.style.display = 'none';
                 recordButton.style.display = 'block';
+
+
+                function getJotformWidgetDataFun() {
+
+                    let widgetData = JFCustomWidget.getWidgetSettings()
+                    let countdownSound = widgetData.countdownSound
+                    let maxLength = widgetData.maxlength
+                    console.log("See: ",widgetData, countdownSound, maxlength);
+                
+                }
+                getJotformWidgetDataFun()
+                
+                
+
             };
 
            
