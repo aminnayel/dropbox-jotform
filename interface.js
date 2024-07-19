@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 video.srcObject = currentStream;
                 video.autoplay = true
                 video.controls = false
+                video.muted = true
 
                 function formatTime(seconds) {
                     const minutes = Math.floor(seconds / 60);
@@ -80,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
                
-                setTimeout(() => {
+                maxRecTimeout = setTimeout(() => {
                     mediaRecorder.stop();
                     clearInterval(recordingInterval)
                 }, maxVideoLength);
@@ -107,14 +108,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 video.src = videoURL; // Replace with recorded video
                 video.autoplay = false;
                 video.controls = true
+                video.muted = false
                 
                 video.controls = true; // Show video controls
                 saveButton.disabled = false;
                 startButton.disabled = false;
                 stopButton.disabled = true;
+                
 
                 recIndicator.style.display = 'none'; // Hide REC indicator after recording stops
                 clearInterval(recordingInterval)
+                clearTimeout(maxRecTimeout)
             };
         } catch (err) {
             console.error('Error accessing media devices.', err);
